@@ -2,18 +2,25 @@ import { useState } from "react";
 import MainMenu from "./components/MainMenu";
 import LanguageSelect from "./components/LanguageSelect";
 import Intro from "./components/Intro";
+import CharacterCreation from "./components/CharacterCreation";
 
-type Screen = "menu" | "language" | "intro" | "game";
+type Screen =
+  | "menu"
+  | "language"
+  | "intro"
+  | "character"
+  | "game";
 
 export default function App() {
   const [screen, setScreen] = useState<Screen>("menu");
   const [language, setLanguage] = useState<"en" | "ha">("en");
 
+  const [playerName, setPlayerName] = useState("Explorer");
+  const [gender, setGender] = useState<"male" | "female">("male");
+
   if (screen === "menu") {
     return (
-      <MainMenu
-        onNewGame={() => setScreen("language")}
-      />
+      <MainMenu onNewGame={() => setScreen("language")} />
     );
   }
 
@@ -32,7 +39,19 @@ export default function App() {
     return (
       <Intro
         language={language}
-        onFinish={() => setScreen("game")}
+        onFinish={() => setScreen("character")}
+      />
+    );
+  }
+
+  if (screen === "character") {
+    return (
+      <CharacterCreation
+        onFinish={(name, selectedGender) => {
+          setPlayerName(name);
+          setGender(selectedGender);
+          setScreen("game");
+        }}
       />
     );
   }
@@ -40,6 +59,7 @@ export default function App() {
   return (
     <div
       style={{
+        width: "100vw",
         height: "100vh",
         background: "#000",
         color: "#00e5ff",
@@ -50,8 +70,13 @@ export default function App() {
         fontFamily: "Arial",
       }}
     >
-      <h1>🎮 NEXORA</h1>
-      <h2>Gameplay Coming Next...</h2>
+      <h1>🎮 Welcome, {playerName}!</h1>
+      <h2>Character: {gender}</h2>
+      <h3>Language: {language === "ha" ? "Hausa 🇳🇬" : "English 🇺🇸"}</h3>
+
+      <p style={{ marginTop: 30 }}>
+        🚧 Awakening Valley (Level 1) is the next module.
+      </p>
     </div>
   );
-      }
+        }
