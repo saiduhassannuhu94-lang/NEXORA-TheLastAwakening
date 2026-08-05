@@ -1,8 +1,9 @@
 import { useState } from "react";
 import MainMenu from "./components/MainMenu";
 import LanguageSelect from "./components/LanguageSelect";
+import Intro from "./components/Intro";
 
-type Screen = "menu" | "language" | "game";
+type Screen = "menu" | "language" | "intro" | "game";
 
 export default function App() {
   const [screen, setScreen] = useState<Screen>("menu");
@@ -21,8 +22,17 @@ export default function App() {
       <LanguageSelect
         onSelect={(lang) => {
           setLanguage(lang);
-          setScreen("game");
+          setScreen("intro");
         }}
+      />
+    );
+  }
+
+  if (screen === "intro") {
+    return (
+      <Intro
+        language={language}
+        onFinish={() => setScreen("game")}
       />
     );
   }
@@ -40,11 +50,8 @@ export default function App() {
         fontFamily: "Arial",
       }}
     >
-      <h1>Welcome to NEXORA</h1>
-
-      <h2>
-        Language: {language === "ha" ? "Hausa 🇳🇬" : "English 🇺🇸"}
-      </h2>
+      <h1>🎮 NEXORA</h1>
+      <h2>Gameplay Coming Next...</h2>
     </div>
   );
-          }
+      }
